@@ -1,21 +1,27 @@
 # Distributed Algorithms Project - Asynchronous Secure Voting
 
-This repository contains a prototype of the distributed voting system. A full overview of the project can be seen in the powerpoint file: Presentation.pptx
+This repository contains a prototype of the distributed voting system. A full overview of the project can be seen in the report file.
 
 ## Example run of the prototype:
 
-There is a client program, with access to the private key of a citizen, that will allow a citizen to cast a vote matching the following attributes:
+Note that to run, the following dependencies are recommended:
 
-| name (encrypted) | vote choice (A/B/C/Yes/No) | HMAC |
-|------------|------------|------------|
-| Row 1 Data | Data       | Data       |
-| Row 2 Data | Data       | Data       |
+| Dependency | Version |
+|-----|---------|
+| Windows | 11 |
+| Python | 3.11.2 |   
+| cryptography | 39.0.0 |
+| pandas | 1.5.3 |
 
-Correspondingly there are multiple distributed databases, each of which will contain the following schema:
+From there, the simulation can be run by the simulate.bat file on the command line.
 
-| name (encrypted) | vote choice (A/B/C/Yes/No) |
-|------------|------------|
-| Row 1 Data | Data       |
-| Row 2 Data | Data       |
+`>simulate.bat`
 
-Since citizens already have a public key registered with the government, there is a record for each citizen in each database, with no vote cast yet. When a citizen sends their vote, the receiver first verifies that the signature is correct via the stored public keys, and then uses the encrypted name as a primary key in the database, updating the row for that citizen with the vote. These distributed databases then synchronize.
+In this simulation, first the state of the directory is reset by reset.py, i.e. there are no databases, election results, registrations, or keys made.
+Second, the registrations of each citizen are made by registrations.py. This means the process of the government creating a registrations file wherein each citizen's
+pseudonym (not real name, for privacy) are linked to the citizens's public key. Third, a network of three database instances are created with fully
+connected topology by database.py. The output of these databases is redirected to a file for each one so the chain of events can be examined after the simulation
+is over. Fourth, the three fictional characters Alice, Bob, and Oscar cast votes to the system via client.py. Each casts a vote to *only* one of the databases.
+Now, the results files can be examined to see that each database, despite receiving a vote from only one of the 3 characters,
+does indeed contain the records of *all* votes because each database communicates new votes to the rest of the network. The results files will also
+show the events that preceded the final state of the database, as well as the final vote tallies.
