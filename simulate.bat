@@ -21,4 +21,10 @@ start cmd /c "py database.py vDB1 127.0.0.1 8081 8084 20 127.0.0.1:8082:8085 127
 start cmd /c "py database.py vDB2 127.0.0.1 8082 8085 20 127.0.0.1:8081:8084 127.0.0.1:8083:8086 > results2.txt"
 start cmd /c "py database.py vDB3 127.0.0.1 8083 8086 20 127.0.0.1:8081:8084 127.0.0.1:8082:8085 > results3.txt"
 
-::3. 
+::3. Now the fictional characters Alice, Bob, and Oscar will try to cast their votes to a database.
+::It is assumed that Alice is closest to DB1, Bob to DB2, Oscar to DB3.
+::By the end, because of the distributed database synchronization, all 3 databases will reflect
+::the same overall votes and vote totals in their results files.
+py client.py voter0 private_key_Alice.pem yes 127.0.0.1 8081
+py client.py voter1 private_key_Bob.pem yes 127.0.0.1 8082
+py client.py voter2 private_key_Oscar.pem no 127.0.0.1 8083

@@ -47,7 +47,7 @@ class VoteDatabase():
         while True:
             try:
                 client_socket, ip_port = self.server_socket.accept()
-                print(ip_port)#@@@
+                print("Received vote from " + str(ip_port))
             except TimeoutError:
                 print("Timed out after " + str(self.timeout) + " seconds")
                 return
@@ -102,8 +102,7 @@ class VoteDatabase():
     def sync_vote(self, vote):
         """Forwards the vote to all neighbor vote databases, achieving synchronization"""
         for neighbor in self.neighbors:
-            print(neighbor)#@@@
-            print(type(neighbor))#@@@
+            print("Synchronizing vote with neighbor: " + str(neighbor))
             self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)#Vote dbs are clients of each other
             self.client_socket.bind((self.addr, self.c_port))
             self.client_socket.connect((neighbor[0], neighbor[1]))

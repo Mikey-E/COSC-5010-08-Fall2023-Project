@@ -5,9 +5,10 @@
 from cryptography.hazmat.primitives import hashes, serialization
 from cryptography.hazmat.primitives.asymmetric import padding
 import socket
+import sys
 
 class Client:
-    def __init__(self, pseudonym:str, private_key_file):
+    def __init__(self, pseudonym:str, private_key_file, choice:str, target_addr:str, target_port:int):
         self.pseudonym = pseudonym
         with open(private_key_file, "rb") as f:
             self.private_key = serialization.load_pem_private_key(
@@ -15,15 +16,13 @@ class Client:
                 password=None,
             )
         self.client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)#SOCK_STREAM is TCP
+        self.choice = choice
+        self.target_addr = target_addr
+        self.target_port = target_port
     
-    def vote(self, choice:str, address:str, port:int):
-        """
-        choice: The client needs to specify the choice for the vote made.
-        address: The address of the which votes database to send the vote to.
-        port: The port of the votes database.
-        """
+    def vote(self):
         delimeter = "<sep>"
-        vote = (self.pseudonym + delimeter + choice).encode()
+        vote = (self.pseudonym + delimeter + self.choice).encode()
         signature = self.private_key.sign(
             vote,
             padding.PSS(
@@ -33,13 +32,13 @@ class Client:
             hashes.SHA256()
         )
         vote = vote + delimeter.encode() + signature
-        self.client_socket.connect((address, port))
+        self.client_socket.connect((self.target_addr, self.target_port))
         self.client_socket.sendall(vote)
         self.client_socket.close()
 
 def main():
-    client = Client("voter0", "private_key_Alice.pem")
-    client.vote("yessir1", "127.0.0.1", 8081)
+    client = Client(sys.argv[1], sys.argv[2], sys.argv[3], sys.argv[4], int(sys.argv[5]))
+    client.vote()
 
 if __name__ == "__main__":
     main()
