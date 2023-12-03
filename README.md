@@ -21,7 +21,9 @@ In this simulation, first the state of the directory is reset by reset.py, i.e. 
 Second, the registrations of each citizen are made by registrations.py. This means the process of the government creating a registrations file wherein each citizen's
 pseudonym (not real name, for privacy) are linked to the citizens's public key. Third, a network of three database instances are created with fully
 connected topology by database.py. The output of these databases is redirected to a file for each one so the chain of events can be examined after the simulation
-is over. Fourth, the three fictional characters Alice, Bob, and Oscar cast votes to the system via client.py. Each casts a vote to *only* one of the databases.
+is over. Fourth, the three fictional characters Alice, Bob, and Oscar cast votes to the system via client.py.
+Each casts a vote to *only* one of the databases. The votes databases timeout after 20 seconds of not receiving any more votes, at which point
+the election is considered to be over.
 Now, the results files can be examined to see that each database, despite receiving a vote from only one of the 3 characters,
 does indeed contain the records of *all* votes because each database communicates new votes to the rest of the network. The results files will also
 show the events that preceded the final state of the database, as well as the final vote tallies.
