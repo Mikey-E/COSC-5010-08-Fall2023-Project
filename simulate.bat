@@ -1,6 +1,9 @@
 ::Author: Michael Elgin (melgin@uwyo.edu)
 ::Batch file to simulate a run of the voting process
 
+::0. Envrionment reset. This will get rid of old databases, keys, results records, etc.
+py reset.py
+
 ::1. Citizens register.
 ::This creates their private keys, their public keys, pseudonyms, and registrations.csv record
 ::which all votes databases are assumed to have. (If these things don't already exist)
