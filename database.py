@@ -41,10 +41,14 @@ class VoteDatabase():
         connection.commit()
 
     def receive_votes(self, delimeter="<sep>"):
+        ip_port_neighbors = [(item[0], item[2]) for item in self.neighbors]#for recognizing neighbors
         while True:
             try:
                 client_socket, ip_port = self.server_socket.accept()
-                print("Received vote from " + str(ip_port))
+                print("Received vote from " + str(ip_port) + \
+                    (", vote is from a recognized neighbor so it will not be forwarded." \
+                    if ip_port in ip_port_neighbors else "")
+                )
             except TimeoutError:
                 print("Timed out after " + str(self.timeout) + " seconds")
                 return
@@ -52,7 +56,7 @@ class VoteDatabase():
             client_socket.close()
             #If the vote came from a neighbor database for syncing, the port in ip_port will be the neighbor database's client socket port.
             #i.e. no need to forward votes that are already being forwarded.
-            if ip_port not in [(item[0], item[2]) for item in self.neighbors]:#Vote came from the original source so must sync it with neighbors
+            if ip_port not in ip_port_neighbors:#Vote came from the original source so must sync it with neighbors
                 self.sync_vote(vote)
             sections = vote.split(delimeter.encode())
             pseudonym = sections[0]
