@@ -17,6 +17,7 @@ py registrations.py
 ::DB2 with neighbors 1 and 3, server socket 8082, client socket 8085
 ::DB3 with neighbors 1 and 2, server socket 8083, client socket 8086
 ::Notice that output is redirected to a file. This is to save results, and also to help with debugging.
+::For a real run of the system, 127.0.0.1 would of course be replaced by the real IP addresses of the databases.
 start cmd /c "py database.py vDB1 127.0.0.1 8081 8084 20 127.0.0.1:8082:8085 127.0.0.1:8083:8086 > results1.txt" 
 start cmd /c "py database.py vDB2 127.0.0.1 8082 8085 20 127.0.0.1:8081:8084 127.0.0.1:8083:8086 > results2.txt"
 start cmd /c "py database.py vDB3 127.0.0.1 8083 8086 20 127.0.0.1:8081:8084 127.0.0.1:8082:8085 > results3.txt"
