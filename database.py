@@ -35,10 +35,7 @@ class VoteDatabase():
         if self.name in os.listdir(): return #Because this should only be done once
         connection = sqlite3.connect(self.name)
         cursor = connection.cursor()
-        cursor.execute("""
-            CREATE TABLE votes
-            (pseudonym text, choice text)
-        """)
+        cursor.execute("CREATE TABLE votes(pseudonym text, choice text)")
         for _, pseudonym in self.registrations['pseudonym'].items():
             cursor.execute("INSERT INTO votes VALUES ('" + pseudonym + "', 'null')")
         connection.commit()
