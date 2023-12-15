@@ -85,7 +85,7 @@ class VoteDatabase():
             print("Pseudonym {0} has not been registered and cannot cast a vote.".format(pseudonym.decode()))
             return False
         try:
-            public_key.verify(#will throw an InvalidSignatureException if message or signature has been altered.
+            public_key.verify(#will throw an InvalidSignature Exception if message or signature has been altered.
                 signature,
                 pseudonym + delimeter.encode() + choice,
                 padding.PSS(
