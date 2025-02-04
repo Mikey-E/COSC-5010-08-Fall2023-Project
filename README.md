@@ -1,5 +1,7 @@
 # Distributed Algorithms Project - Asynchronous Secure Voting
 
+Project for COSC-5010-08-Fall2023-Project
+
 This repository contains a prototype of the distributed voting system. A full overview of the project can be seen in the report file.
 
 ## Example run of the prototype:
